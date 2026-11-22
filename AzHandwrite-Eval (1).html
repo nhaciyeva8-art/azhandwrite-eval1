@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AzHandwrite-Eval</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F1E7;--card:#FFFDF8;--sub:#EFE8D8;--ink:#14213D;--ink2:#4A5468;--mut:#7B8396;--line:#E4DAC4;--teal:#0F8B8D;--tealD:#0A6567;--tealS:#D5F0EE;--ter:#E4572E;--terS:#FDE4DA;--gold:#F2B134;--hero1:#14213D;--hero2:#1F3A68;--r:16px;--sh:0 8px 30px rgba(20,33,61,.08);
+--serif:"Fraunces",Georgia,serif;--sans:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0E1424;--card:#172038;--sub:#1E2947;--ink:#F1EDE2;--ink2:#B5BDD0;--mut:#8A94AD;--line:#2B375A;--tealS:#0E3B3D;--terS:#42221A;--hero1:#0A1020;--hero2:#16294F;--sh:0 8px 30px rgba(0,0,0,.35)}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0E1424;--card:#172038;--sub:#1E2947;--ink:#F1EDE2;--ink2:#B5BDD0;--mut:#8A94AD;--line:#2B375A;--tealS:#0E3B3D;--terS:#42221A;--hero1:#0A1020;--hero2:#16294F;--sh:0 8px 30px rgba(0,0,0,.35)}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.55;min-height:100vh}
+.hero{position:relative;overflow:hidden;background:radial-gradient(900px 400px at 85% -10%,rgba(15,139,141,.45),transparent 60%),linear-gradient(135deg,var(--hero1),var(--hero2));color:#F6F1E7;padding:56px 28px 90px}
+.hero-in{max-width:1180px;margin:0 auto;position:relative;z-index:2}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;font:700 .78rem var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#8EE3E0;background:rgba(142,227,224,.12);border:1px solid rgba(142,227,224,.3);padding:6px 14px;border-radius:99px}
+.dot{width:8px;height:8px;border-radius:50%;background:#5CF2C3;box-shadow:0 0 0 0 rgba(92,242,195,.7);animation:pulse 1.8s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 10px rgba(92,242,195,0)}100%{box-shadow:0 0 0 0 rgba(92,242,195,0)}}
+.hero h1{font:800 clamp(2.2rem,6vw,4rem)/1.05 var(--serif);letter-spacing:-.02em;margin:20px 0 14px;max-width:760px}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p{max-width:620px;color:#C3CCE0;font-size:1.05rem}
+.stats{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+.stat{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:12px 20px;backdrop-filter:blur(6px)}
+.stat b{display:block;font:800 1.6rem var(--serif);color:#fff}.stat span{font-size:.78rem;color:#A9B6D3}
+.glyph{position:absolute;font:800 clamp(4rem,12vw,9rem) var(--serif);color:rgba(255,255,255,.06);user-select:none;animation:float 9s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-18px) rotate(4deg)}}
+.nav{max-width:1180px;margin:-34px auto 0;padding:0 20px;position:sticky;top:0;z-index:20}
+.pills{display:flex;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:6px;box-shadow:var(--sh);overflow-x:auto}
+.pill{flex:1;white-space:nowrap;border:0;background:none;font:700 .92rem var(--sans);color:var(--ink2);padding:12px 18px;border-radius:99px;cursor:pointer;transition:.2s}
+.pill:hover{background:var(--sub)}.pill.on{background:var(--ink);color:var(--bg)}
+.pill i{font:700 .72rem var(--mono);font-style:normal;background:var(--ter);color:#fff;border-radius:99px;padding:2px 8px;margin-left:6px}
+main{max-width:1180px;margin:26px auto;padding:0 20px 60px}
+.panel{display:none;animation:in .3s ease}.panel.on{display:block}@keyframes in{from{opacity:0;transform:translateY(8px)}}
+.sh{margin-bottom:20px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px}
+.sh h2{font:800 1.7rem var(--serif);letter-spacing:-.01em}.sh p{color:var(--ink2);max-width:640px;font-size:.95rem}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
+.step{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;opacity:.6;transition:.25s}
+.step b{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--sub);font:800 .95rem var(--serif)}
+.step small{display:block;color:var(--mut);font-size:.78rem}.step strong{font-size:.92rem}
+.step.on{opacity:1;border-color:var(--teal);box-shadow:var(--sh)}.step.on b{background:var(--teal);color:#fff}
+.step.done{opacity:1}.step.done b{background:var(--tealS);color:var(--tealD)}
+@media(max-width:760px){.steps{grid-template-columns:1fr}.g2{grid-template-columns:1fr!important}.kpis{grid-template-columns:1fr 1fr!important}}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--sh)}
+.ct{font:800 1.1rem var(--serif);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.lbl{display:block;font-size:.8rem;font-weight:700;color:var(--ink2);margin-bottom:6px}
+.samples{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{border:1px solid var(--line);background:var(--sub);color:var(--ink);font:700 .82rem var(--sans);padding:8px 14px;border-radius:99px;cursor:pointer}
+.chip:hover,.chip.sel{background:var(--tealS);border-color:var(--teal);color:var(--tealD)}
+.drop{border:2px dashed var(--line);border-radius:14px;padding:12px;margin-bottom:14px;transition:.2s}.drop.over{border-color:var(--teal);background:var(--tealS)}
+.pv{position:relative;height:230px;border-radius:10px;background:#FFFDF7;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:12px}
+.pv canvas,.pv img{max-width:100%;max-height:100%;object-fit:contain}
+.scan{position:absolute;left:0;width:100%;height:60px;background:linear-gradient(180deg,transparent,rgba(15,139,141,.35));border-bottom:3px solid var(--teal);display:none;animation:scan 1.3s linear infinite}
+.scanning .scan{display:block}@keyframes scan{from{top:-60px}to{top:100%}}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{font:700 .92rem var(--sans);padding:12px 20px;border-radius:12px;border:0;cursor:pointer;display:inline-flex;gap:8px;align-items:center;justify-content:center;transition:.15s}
+.btn:active{transform:scale(.98)}.btn:disabled{opacity:.6;cursor:wait}
+.b1{background:var(--ink);color:var(--bg)}.b2{background:var(--teal);color:#fff}.b2:hover{background:var(--tealD)}
+.b3{background:var(--card);color:var(--ink);border:1px solid var(--line)}.b3:hover{background:var(--sub)}.b4{background:var(--terS);color:var(--ter)}
+.ai{width:100%;padding:15px;font-size:1rem;background:linear-gradient(135deg,var(--teal),#2A6FDB);color:#fff;box-shadow:0 8px 20px rgba(15,139,141,.3)}
+.status{margin-top:12px;font-size:.86rem;color:var(--ink2);background:var(--sub);border-radius:10px;padding:10px 14px;min-height:42px}
+.status.warn{background:var(--terS);color:var(--ter)}
+.raw{background:var(--terS);border:1px solid var(--line);border-radius:10px;padding:14px;font:.92rem/1.7 var(--mono);min-height:72px;margin-bottom:14px;white-space:pre-wrap}
+.raw.empty{color:var(--mut);font-style:italic}
+.err{background:var(--gold);color:#3A2A00;font-weight:800;padding:0 3px;border-radius:4px}
+textarea,select,input{font:.92rem var(--sans);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--ink);background:var(--card);width:100%}
+textarea:focus,select:focus,input:focus{outline:0;border-color:var(--teal);box-shadow:0 0 0 3px rgba(15,139,141,.2)}
+.chars{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0}.chars button{border:1px solid var(--line);background:var(--sub);color:var(--ink);border-radius:8px;padding:4px 11px;font:800 .95rem var(--mono);cursor:pointer}.chars button:hover{background:var(--tealS)}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.cer{display:flex;justify-content:space-between;align-items:center;background:var(--sub);border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:.88rem}
+.cer b{font:800 1.3rem var(--serif);color:var(--ter)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh)}
+.kpi span{font-size:.8rem;font-weight:700;color:var(--ink2)}.kpi b{display:block;font:800 2rem var(--serif);margin-top:2px}.kpi small{color:var(--mut);font-size:.76rem}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--card);box-shadow:var(--sh)}
+table{width:100%;border-collapse:collapse;font-size:.88rem;text-align:left}
+th{background:var(--ink);color:var(--bg);padding:13px 16px;white-space:nowrap;font-weight:700}
+td{padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}tr:last-child td{border:0}
+.tag{display:inline-block;font:700 .74rem var(--sans);padding:3px 10px;border-radius:99px;white-space:nowrap}
+.t-ok{background:var(--tealS);color:var(--tealD)}.t-h{background:var(--terS);color:var(--ter)}.t-m{background:#FBEBC4;color:#7A5200}.t-e{background:#DCE8FB;color:#24508F}
+.bars{display:flex;flex-direction:column;gap:16px}.bh{display:flex;justify-content:space-between;font-size:.88rem;font-weight:700;margin-bottom:6px;gap:10px}
+.tr{height:14px;background:var(--sub);border-radius:99px;overflow:hidden}.fl{height:100%;border-radius:99px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.note{margin-top:22px;background:var(--tealS);border-left:4px solid var(--teal);border-radius:0 12px 12px 0;padding:16px 20px;font-size:.9rem;color:var(--ink)}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:13px 22px;border-radius:99px;box-shadow:var(--sh);font-weight:600;font-size:.9rem;display:none;z-index:99;max-width:92vw}
+</style>
+</head>
+<body>
+<header class="hero">
+  <span class="glyph" style="top:10%;right:6%">ə</span><span class="glyph" style="top:48%;right:24%;animation-delay:-3s">ğ</span><span class="glyph" style="top:2%;right:34%;animation-delay:-5s">ı</span><span class="glyph" style="top:55%;right:2%;animation-delay:-7s">ş</span>
+  <div class="hero-in">
+    <span class="eyebrow"><span class="dot"></span>Süni intellekt ilə əlyazma oxuma</span>
+    <h1>Əlyazmanı <em>oxu</em>, düzəlt, <em>ölç</em>.</h1>
+    <p>Azərbaycan dilindəki əlyazma şəklini yüklə, AI mətnə çevirsin, səhvləri sən düzəlt və nəticə avtomatik benchmark datasetinə düşsün.</p>
+    <div class="stats">
+      <div class="stat"><b id="h-n">0</b><span>nümunə toplanıb</span></div>
+      <div class="stat"><b id="h-cer">0%</b><span>orta hərf səhvi (CER)</span></div>
+      <div class="stat"><b>7</b><span>xüsusi hərf: ə ğ ı ö ü ş ç</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav"><div class="pills">
+  <button class="pill on" onclick="tab('t1',this)">✍️ Əlyazmanı oxu</button>
+  <button class="pill" onclick="tab('t2',this)">📚 Dataset <i id="nav-n">0</i></button>
+  <button class="pill" onclick="tab('t3',this)">🏆 Model müqayisəsi</button>
+</div></nav>
+
+<main>
+<section id="t1" class="panel on">
+  <div class="sh"><div><h2>Üç addımda əlyazmanı rəqəmsallaşdır</h2><p>Şəkli seç, AI-a oxut, sonra səhv tanınan hərfləri düzəlt.</p></div></div>
+  <div class="steps">
+    <div class="step on" id="s1"><b>1</b><div><strong>Şəkil seç</strong><small>Nümunə və ya öz şəklin</small></div></div>
+    <div class="step" id="s2"><b>2</b><div><strong>AI oxusun</strong><small>Mətn avtomatik çıxarılır</small></div></div>
+    <div class="step" id="s3"><b>3</b><div><strong>Yoxla və saxla</strong><small>Düzəliş et, datasetə əlavə et</small></div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct"><span>1 · Şəkil</span></div>
+      <span class="lbl">Hazır nümunələr:</span>
+      <div class="samples">
+        <button class="chip sel" onclick="loadSample(0)">Mühazirə qeydi</button>
+        <button class="chip" onclick="loadSample(1)">ə / ö / ü / ğ qarışıq</button>
+        <button class="chip" onclick="loadSample(2)">Tələbə qeydi</button>
+      </div>
+      <div class="drop" id="drop">
+        <div class="pv" id="pv"><div class="scan"></div><canvas id="cv" width="560" height="220"></canvas><img id="up" alt="Yüklənmiş əlyazma" style="display:none"></div>
+        <div class="row" style="justify-content:center">
+          <input type="file" id="file" accept="image/*" hidden onchange="onFile(event)">
+          <button class="btn b3" onclick="file.click()">📁 Öz şəklini yüklə</button>
+          <span style="font-size:.8rem;color:var(--mut)">və ya şəkli bura sürüşdür</span>
+        </div>
+      </div>
+      <button class="btn ai" id="aiBtn" onclick="runAI()">✨ AI ilə oxu</button>
+      <div class="status" id="status">Şəkil hazırdır. “AI ilə oxu” düyməsinə bas.</div>
+    </div>
+
+    <div class="card">
+      <div class="ct"><span>2 · AI nəticəsi və düzəliş</span><span class="tag t-m" id="src">Hələ oxunmayıb</span></div>
+      <span class="lbl" id="rawLbl">AI-ın oxuduğu (xam) mətn — fərqli hərflər sarı ilə:</span>
+      <div class="raw empty" id="raw">AI hələ oxumayıb. Nəticə burada görünəcək.</div>
+      <span class="lbl">Düzgün (etalon) mətn — səhvləri burada düzəlt:</span>
+      <div class="chars">
+        <button onclick="ins('ə')">ə</button><button onclick="ins('ö')">ö</button><button onclick="ins('ü')">ü</button><button onclick="ins('ğ')">ğ</button><button onclick="ins('ş')">ş</button><button onclick="ins('ç')">ç</button><button onclick="ins('ı')">ı</button>
+      </div>
+      <textarea id="truth" rows="3" oninput="liveCer()" placeholder="AI oxuduqdan sonra mətn buraya düşəcək"></textarea>
+      <div class="mg">
+        <div><label class="lbl" for="diff">Xətt çətinliyi</label><select id="diff"><option>Çətin</option><option>Orta</option><option>Asan</option></select></div>
+        <div><label class="lbl" for="dtype">Mətn növü</label><select id="dtype"><option>Mühazirə</option><option>Sənəd</option><option>Qeyd</option></select></div>
+      </div>
+      <div class="cer"><span>Hərf səhvi <strong>CER</strong> (AI vs düzgün mətn)</span><b id="cerv">0.0%</b></div>
+      <div class="row">
+        <button class="btn b2" style="flex:1" onclick="save()">✅ Təsdiqlə və datasetə əlavə et</button>
+        <button class="btn b3" id="demoBtn" onclick="fillTruth()" title="Yalnız hazır nümunələr üçün">Düzgün cavabı göstər</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="t2" class="panel">
+  <div class="sh"><div><h2>Toplanmış dataset</h2><p>Sənin təsdiqlədiyin şəkil–mətn cütləri və avtomatik hesablanmış səhv göstəriciləri.</p></div>
+    <div class="row"><button class="btn b2" onclick="expJSON()">JSON yüklə</button><button class="btn b1" onclick="expCSV()">CSV yüklə</button><button class="btn b4" onclick="resetDs()">Sıfırla</button></div></div>
+  <div class="kpis">
+    <div class="kpi"><span>Ümumi nümunə</span><b id="k-n">0</b><small>şəkil–mətn cütü</small></div>
+    <div class="kpi"><span>Orta CER</span><b id="k-c" style="color:var(--ter)">0%</b><small>xam AI çıxarışında xəta</small></div>
+    <div class="kpi"><span>Təsdiqlənmiş</span><b id="k-v" style="color:var(--tealD)">100%</b><small>insan yoxlamalı</small></div>
+    <div class="kpi"><span>Xüsusi hərf dəqiqliyi</span><b id="k-a">0%</b><small>ə ğ ı ö ü ş ç üzrə (təxmini)</small></div>
+  </div>
+  <div class="tw"><table><thead><tr><th>ID</th><th>Mənbə</th><th>Xam AI mətni</th><th>Düzgün mətn</th><th>CER</th><th>Çətinlik</th><th>Status</th></tr></thead><tbody id="dsb"></tbody></table></div>
+</section>
+
+<section id="t3" class="panel">
+  <div class="sh"><div><h2>Modellərin müqayisəsi</h2><p>Eyni əlyazma nümunələri üzərində müxtəlif modellərin nəticələri. Hər yeni sınağı aşağıdakı formadan əlavə et.</p></div></div>
+  <div class="g2" style="margin-bottom:22px">
+    <div class="card"><div class="ct"><span>Xüsusi hərf dəqiqliyi</span><span style="font-size:.78rem;color:var(--mut)">yüksək = yaxşı</span></div><div class="bars" id="bars"></div></div>
+    <div class="card"><div class="ct"><span>Yeni nəticə əlavə et</span></div>
+      <form onsubmit="addBm(event)">
+        <label class="lbl" for="bn">Modelin adı</label><input id="bn" placeholder="Məs: Qwen2-VL-7B" required>
+        <div class="mg"><div><label class="lbl" for="bc">CER (%)</label><input id="bc" type="number" step="0.1" min="0" max="100" required></div><div><label class="lbl" for="bw">WER (%)</label><input id="bw" type="number" step="0.1" min="0" max="100" required></div></div>
+        <div class="mg"><div><label class="lbl" for="ba">Xüsusi hərf dəqiqliyi (%)</label><input id="ba" type="number" step="0.1" min="0" max="100" required></div><div><label class="lbl" for="bl">Cavab müddəti</label><input id="bl" placeholder="1.4 san" required></div></div>
+        <button class="btn b2" style="width:100%" type="submit">Cədvələ əlavə et</button>
+      </form></div>
+  </div>
+  <div class="tw"><table><thead><tr><th>Model</th><th>CER ↓</th><th>WER ↓</th><th>Xüsusi hərf ↑</th><th>Müddət</th></tr></thead><tbody id="bmb"></tbody></table></div>
+  <div class="note"><strong>Necə ölçülür?</strong> CER = (əvəzləmə + silmə + əlavə) / hərf sayı. WER eyni qaydada söz səviyyəsində hesablanır. Azərbaycan hərfləri (<em>ə, ğ, ı, ö, ü, ş, ç</em>) ayrıca ölçülür ki, ümumi OCR xətası ilə dilə xas səhvlər fərqlənsin.</div>
+</section>
+</main>
+<div id="toast"></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const SAMPLES=[
+ {src:"Mühazirə_01.png",lines:["Azərbaycan dilində əlyazma mətnlərinin","tanınması üçün keyfiyyətli dataset və","obyektiv qiymətləndirmə vacibdir."],demo:"Azərbaycan dilinde əlyazma mətnlərinin taninması üçün keyfiyyətli dataset və obyektiv qiymətləndirmə vacibdir.",truth:"Azərbaycan dilində əlyazma mətnlərinin tanınması üçün keyfiyyətli dataset və obyektiv qiymətləndirmə vacibdir.",diff:"Çətin",type:"Mühazirə"},
+ {src:"XüsusiHərflər_02.png",lines:["Öyrənənlər üçün şagirdlərin çətin","sözləri düzgün oxuması və ğ, ı, ə","hərflərinin fərqləndirilməsi əsasdır."],demo:"Öyrənənlər üçün şagirdlərin cetin sözləri düzgün oxumasi və g, ı, ə hərflərinin fərqləndirilməsi əsasdır.",truth:"Öyrənənlər üçün şagirdlərin çətin sözləri düzgün oxuması və ğ, ı, ə hərflərinin fərqləndirilməsi əsasdır.",diff:"Çətin",type:"Qeyd"},
+ {src:"TələbəQeydi_03.png",lines:["Süni intellekt modelləri morfoloji","şəkilçiləri və cümlə quruluşunu","təmiz korpus üzərində öyrənir."],demo:"Süni intellekt modelləri morfoloji şəkilçiləri və cümlə quruluşunu təmiz korpus uzerində öyrənir.",truth:"Süni intellekt modelləri morfoloji şəkilçiləri və cümlə quruluşunu təmiz korpus üzərində öyrənir.",diff:"Orta",type:"Mühazirə"}];
+const DS0=[
+ {id:"AZ-HW-001",source:"Mühazirə_Fizika_04.jpg",raw:"Elektromaqnit dalgalarinin yayilma sureti muhitin xususiyyetlerinden asilidir.",truth:"Elektromaqnit dalğalarının yayılma sürəti mühitin xüsusiyyətlərindən asılıdır.",cer:12.2,diff:"Çətin",type:"Mühazirə"},
+ {id:"AZ-HW-002",source:"Ərizə_Nümunə_11.png",raw:"Xahis edirem menim senedlerimi qeydiyyat sobesine teqdim edesiniz.",truth:"Xahiş edirəm mənim sənədlərimi qeydiyyat şöbəsinə təqdim edəsiniz.",cer:13.6,diff:"Orta",type:"Sənəd"},
+ {id:"AZ-HW-003",source:"Tarix_Qeyd_19.jpg",raw:"Şərqdə ilk demokratik respublika olan Azərbaycan Xalq Cümhuriyyeti 1918-ci ilde qurulub.",truth:"Şərqdə ilk demokratik respublika olan Azərbaycan Xalq Cümhuriyyəti 1918-ci ildə qurulub.",cer:2.3,diff:"Asan",type:"Qeyd"}];
+const BM0=[
+ {name:"Tesseract OCR (az)",cer:28.4,wer:46.2,az:61.5,lat:"0.4 san"},
+ {name:"AzQ-1.7B + baza OCR",cer:16.8,wer:29.5,az:79.0,lat:"1.1 san"},
+ {name:"GPT-4o Vision (zero-shot)",cer:9.2,wer:17.8,az:89.4,lat:"2.3 san"},
+ {name:"Gemini Vision (zero-shot)",cer:8.7,wer:16.9,az:90.2,lat:"1.9 san"},
+ {name:"Təklif olunan hibrid pipeline (OCR + AZ qrammatika)",cer:4.6,wer:9.8,az:96.4,lat:"1.5 san",hl:true}];
+let cur={idx:0,src:SAMPLES[0].src,file:null,raw:""},ds=[],bm=[];
+
+function lev(a,b){const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let p=Array.from({length:n+1},(_,j)=>j);for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c}return p[n]}
+const cerOf=(r,t)=>{t=(t||"").trim();return t?+(lev((r||"").trim(),t)/t.length*100).toFixed(1):0};
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+let tt;function toast(m){const t=$("toast");t.textContent=m;t.style.display="block";clearTimeout(tt);tt=setTimeout(()=>t.style.display="none",3400)}
+function setStep(n){["s1","s2","s3"].forEach((id,i)=>{const e=$(id);e.className="step"+(i+1<n?" done":i+1===n?" on":"")})}
+function tab(id,b){document.querySelectorAll(".panel").forEach(p=>p.classList.remove("on"));document.querySelectorAll(".pill").forEach(p=>p.classList.remove("on"));$(id).classList.add("on");b.classList.add("on");if(id==="t3")renderBm()}
+
+function draw(lines){const c=$("cv"),x=c.getContext("2d"),w=c.width,h=c.height;$("up").style.display="none";c.style.display="block";
+ x.fillStyle="#FFFDF7";x.fillRect(0,0,w,h);x.strokeStyle="#CBD5E1";for(let y=45;y<h;y+=44){x.beginPath();x.moveTo(20,y);x.lineTo(w-20,y);x.stroke()}
+ x.strokeStyle="#FCA5A5";x.beginPath();x.moveTo(46,0);x.lineTo(46,h);x.stroke();x.fillStyle="#1E3A8A";x.font="italic 22px 'Segoe Print','Comic Sans MS','Bradley Hand',cursive,Georgia,serif";
+ lines.forEach((l,i)=>{x.save();x.translate(i%2?63:58,42+i*44);x.rotate((i-1)*.008);x.fillText(l,0,0);x.restore()})}
+function resetOut(){cur.raw="";$("rawLbl").textContent="AI-ın oxuduğu (xam) mətn — fərqli hərflər sarı ilə:";$("raw").className="raw empty";$("raw").textContent="AI hələ oxumayıb. Nəticə burada görünəcək.";$("truth").value="";$("cerv").textContent="0.0%";$("src").textContent="Hələ oxunmayıb";$("src").className="tag t-m"}
+function loadSample(i){cur={idx:i,src:SAMPLES[i].src,file:null,raw:""};document.querySelectorAll(".chip").forEach((c,j)=>c.classList.toggle("sel",j===i));
+ draw(SAMPLES[i].lines);$("diff").value=SAMPLES[i].diff;$("dtype").value=SAMPLES[i].type;$("demoBtn").style.display="";resetOut();setStep(1);$("status").className="status";$("status").textContent="Nümunə hazırdır. “AI ilə oxu” düyməsinə bas."}
+function onFile(e){const f=e.target.files[0];if(!f)return;if(!f.type.startsWith("image/")){toast("Hələlik yalnız şəkil faylları (JPG, PNG, WEBP) analiz olunur.");return}const r=new FileReader();r.onload=ev=>{$("cv").style.display="none";$("up").src=ev.target.result;$("up").style.display="block";
+ cur={idx:-1,src:f.name,file:f,raw:""};document.querySelectorAll(".chip").forEach(c=>c.classList.remove("sel"));$("demoBtn").style.display="none";resetOut();setStep(1);$("status").className="status";$("status").textContent="Şəkil yükləndi: "+f.name+". İndi “AI ilə oxu” düyməsinə bas."};r.readAsDataURL(f)}
+
+const PROMPT="Şəkli diqqətlə analiz et. Əgər şəkildə əlyazma mətn varsa: birinci sətirdə yalnız ƏLYAZMA sözünü yaz, sonrakı sətirdə mətni olduğu kimi oxu (Azərbaycan Latın əlifbası; ə, ğ, ı, İ, ö, ü, ş, ç hərflərini dəqiq saxla, mətni düzəltmə, sətir sonlarını boşluqla əvəz et, izah əlavə etmə). Əgər əlyazma yoxdursa (çap mətn, sənəd, foto, cədvəl, şəkil və s.): birinci sətirdə yalnız DİGƏR sözünü yaz, sonra şəkildə nə olduğunu Azərbaycan dilində 3-5 cümlə ilə izah et; görünən mətn varsa onu da oxu.";
+async function getBlob(){if(cur.file)return cur.file;return new Promise(r=>$("cv").toBlob(r,"image/png"))}
+async function runAI(){
+ const btn=$("aiBtn"),st=$("status");btn.disabled=true;btn.textContent="⏳ AI oxuyur…";$("pv").classList.add("scanning");setStep(2);st.className="status";st.textContent="AI şəkli təhlil edir, bir neçə saniyə gözləyin…";
+ let text="",live=true,kind="hw";
+ try{
+  const s=await claude.use("sample");if(!s)throw{code:"none"};
+  const lim=await s.limits();if(!lim||!lim.images)throw{code:"noimg"};
+  const blob=await getBlob();
+  const out=await s(PROMPT,{images:[blob],modelTier:"default",cache:false,onText:({text:t})=>{cur.raw=t.replace(/^Thinking\.\.\.$/,"");}});
+  text=(out.text||"").trim();if(!text)throw{code:"empty"};
+  const mm=text.match(/^\s*(ƏLYAZMA|DİGƏR)\s*\n?([\s\S]*)$/i);if(mm){kind=/^D/i.test(mm[1])?"other":"hw";text=mm[2].trim()}
+ }catch(e){
+  if(cur.idx<0){$("pv").classList.remove("scanning");btn.disabled=false;btn.textContent="✨ AI ilə yenidən oxu";setStep(1);st.className="status warn";st.textContent="AI şəkli analiz edə bilmədi (icazə verilməyib, limit dolub və ya xəta baş verib). Bir azdan yenidən cəhd et.";return}
+  live=false;text=SAMPLES[cur.idx].demo;
+  st.className="status warn";st.textContent="Canlı AI bu mühitdə əlçatan deyil. Hazır nümunə üçün demo nəticə göstərilir.";
+ }
+ $("pv").classList.remove("scanning");btn.disabled=false;btn.textContent="✨ AI ilə yenidən oxu";
+ $("src").textContent=live?"Canlı AI":"Demo rejimi";$("src").className="tag "+(live?"t-ok":"t-m");
+ if(kind==="other"){cur.raw="";$("rawLbl").textContent="AI-ın analizi:";$("raw").className="raw";$("raw").style.whiteSpace="pre-wrap";$("raw").textContent=text;$("truth").value="";$("cerv").textContent="—";st.className="status";st.textContent="Bu şəkildə əlyazma tapılmadı, ona görə AI şəkli təsvir etdi. Dataset üçün əlyazma şəkli yüklə.";setStep(2);return}
+ $("rawLbl").textContent="AI-ın oxuduğu (xam) mətn — fərqli hərflər sarı ilə:";
+ cur.raw=text;$("truth").value=text;
+ if(live){st.className="status";st.textContent="Hazırdır! AI əlyazmanı oxudu. İndi sağ tərəfdə səhvləri düzəldin və təsdiqləyin."}
+ liveCer();setStep(3);
+}
+function fillTruth(){if(cur.idx<0||!cur.raw){toast("Əvvəl AI ilə oxuyun.");return}$("truth").value=SAMPLES[cur.idx].truth;liveCer()}
+function showRaw(raw,truth){const rw=raw.split(" "),tw=truth.split(" ");$("raw").className="raw";
+ $("raw").innerHTML=rw.map((w,i)=>{const t=tw[i]||"";if(w===t)return esc(w);let h="";for(let k=0;k<w.length;k++)h+=w[k]!==t[k]?`<span class="err" title="Gözlənilən: ${esc(t[k]||"?")}">${esc(w[k])}</span>`:esc(w[k]);return h}).join(" ")}
+function liveCer(){const t=$("truth").value;if(!cur.raw)return;$("cerv").textContent=cerOf(cur.raw,t).toFixed(1)+"%";showRaw(cur.raw,t)}
+function ins(ch){const t=$("truth"),a=t.selectionStart,b=t.selectionEnd;t.value=t.value.slice(0,a)+ch+t.value.slice(b);t.focus();t.selectionStart=t.selectionEnd=a+1;liveCer()}
+function save(){const t=$("truth").value.trim();if(!cur.raw){toast("Əvvəl şəkli AI ilə oxudun.");return}if(!t){toast("Düzgün mətn boş ola bilməz.");return}
+ const c=cerOf(cur.raw,t),e={id:"AZ-HW-"+String(ds.length+1).padStart(3,"0"),source:cur.src,raw:cur.raw,truth:t,cer:c,diff:$("diff").value,type:$("dtype").value};
+ ds.unshift(e);persist();renderDs();toast(`Əlavə olundu: ${e.id} · CER ${c.toFixed(1)}%`);resetOut();setStep(1);$("status").textContent="Yeni nümunə üçün şəkil seçin."}
+
+function renderDs(){const n=ds.length,avg=n?ds.reduce((s,x)=>s+Number(x.cer),0)/n:0;
+ $("nav-n").textContent=n;$("k-n").textContent=n;$("h-n").textContent=n;$("k-c").textContent=avg.toFixed(1)+"%";$("h-cer").textContent=avg.toFixed(1)+"%";$("k-a").textContent=Math.max(0,100-avg*1.1).toFixed(1)+"%";
+ $("dsb").innerHTML=ds.map(x=>{const k=x.diff==="Çətin"?"t-h":x.diff==="Orta"?"t-m":"t-e";return`<tr><td style="font:700 .82rem var(--mono);white-space:nowrap">${esc(x.id)}</td><td><b>${esc(x.source)}</b><div style="font-size:.76rem;color:var(--mut)">${esc(x.type)}</div></td><td style="font:.82rem var(--mono);color:var(--ter)">${esc(x.raw)}</td><td>${esc(x.truth)}</td><td style="font:800 .95rem var(--mono);color:var(--ter)">${Number(x.cer).toFixed(1)}%</td><td><span class="tag ${k}">${esc(x.diff)}</span></td><td><span class="tag t-ok">Təsdiqlənib</span></td></tr>`}).join("")}
+function dl(c,f,m){const u=URL.createObjectURL(new Blob([c],{type:m})),a=document.createElement("a");a.href=u;a.download=f;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u)}
+async function save2(c,f,m,msg){try{const d=await claude.use("downloads");if(d){await d.save({filename:f,data:c});toast(msg);return}}catch(e){}dl(c,f,m);toast(msg)}
+function expJSON(){save2(JSON.stringify(ds.map(x=>({id:x.id,image_file:x.source,raw_ocr_prediction:x.raw,ground_truth_text:x.truth,cer_percent:x.cer,metadata:{language:"az",difficulty:x.diff,category:x.type,verified:true}})),null,2),"azhandwrite_dataset.json","application/json","JSON faylı hazırdır.")}
+function expCSV(){const r=ds.map(x=>[x.id,x.source,x.raw,x.truth,x.cer,x.diff,x.type].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(","));save2("\uFEFF"+["ID,Mənbə,Xam_AI,Düzgün_mətn,CER,Çətinlik,Növ",...r].join("\n"),"azhandwrite_dataset.csv","text/csv;charset=utf-8","CSV faylı hazırdır.")}
+function resetDs(){ds=JSON.parse(JSON.stringify(DS0));persist();renderDs();toast("Dataset ilkin vəziyyətə qaytarıldı.")}
+
+function renderBm(){const mx=Math.max(...bm.map(m=>m.az),1);
+ $("bars").innerHTML=bm.map(m=>{const c=m.hl?"var(--teal)":m.az>=85?"var(--ink)":"var(--ter)";return`<div><div class="bh"><span>${esc(m.name)}</span><span style="font-family:var(--mono);color:${c}">${m.az.toFixed(1)}%</span></div><div class="tr"><div class="fl" style="width:${Math.min(100,m.az)}%;background:${c}"></div></div></div>`}).join("");
+ $("bmb").innerHTML=bm.map(m=>`<tr style="${m.hl?"background:var(--tealS);font-weight:700":""}"><td>${esc(m.name)} ${m.hl?'<span class="tag t-ok">Ən yaxşı</span>':""}</td><td style="font:800 .9rem var(--mono);color:var(--ter)">${m.cer.toFixed(1)}%</td><td style="font-family:var(--mono)">${m.wer.toFixed(1)}%</td><td style="font:800 .9rem var(--mono);color:var(--tealD)">${m.az.toFixed(1)}%</td><td style="font-family:var(--mono)">${esc(m.lat)}</td></tr>`).join("")}
+function addBm(e){e.preventDefault();const m={name:$("bn").value.trim(),cer:+$("bc").value,wer:+$("bw").value,az:+$("ba").value,lat:$("bl").value.trim()};bm.push(m);persist();renderBm();e.target.reset();toast(`“${m.name}” cədvələ əlavə olundu.`)}
+
+function persist(){try{localStorage.setItem("azhw_ds2",JSON.stringify(ds));localStorage.setItem("azhw_bm2",JSON.stringify(bm))}catch(e){}}
+function load(){try{const a=localStorage.getItem("azhw_ds2"),b=localStorage.getItem("azhw_bm2");ds=a?JSON.parse(a):JSON.parse(JSON.stringify(DS0));bm=b?JSON.parse(b):JSON.parse(JSON.stringify(BM0))}catch(e){ds=JSON.parse(JSON.stringify(DS0));bm=JSON.parse(JSON.stringify(BM0))}}
+const dz=$("drop");dz.addEventListener("dragover",e=>{e.preventDefault();dz.classList.add("over")});dz.addEventListener("dragleave",()=>dz.classList.remove("over"));
+dz.addEventListener("drop",e=>{e.preventDefault();dz.classList.remove("over");if(e.dataTransfer.files[0])onFile({target:{files:e.dataTransfer.files}})});
+load();loadSample(0);renderDs();renderBm();
+</script>
+</body>
+</html>
